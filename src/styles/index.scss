@@ -63,12 +63,24 @@ body {
 
 .start {
   background-color: #50858B;
+
+  &:hover {
+    background-color: darken(#50858B, 10%);
+  }
 }
 
 .stop {
   background-color: #A1D2CE;
+
+  &:hover {
+    background-color: darken(#A1D2CE, 10%);
+  }
 }
 
 .reset {
   background-color: #5497A7;
+
+  &:hover {
+    background-color: darken(#5497A7, 10%);
+  }
 }
