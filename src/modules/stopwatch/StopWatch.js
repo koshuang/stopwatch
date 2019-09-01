@@ -1,5 +1,6 @@
 import { StateMachine } from 'state-machine';
 import { secondsToString } from 'utils';
+import { stateSetting } from './stateSetting';
 
 export class StopWatch {
   _time;
@@ -8,7 +9,7 @@ export class StopWatch {
   _reset;
 
   _stateMachine;
-  _stateSetting;
+  _stateSetting = stateSetting;
   _actions = {
     start: 'START',
     tick: 'TICK',
@@ -29,37 +30,6 @@ export class StopWatch {
   }
 
   _initStateMachine() {
-    const seconds = 60;
-    const countdown = context => context.count - 1;
-    const reset = () => seconds;
-
-    this._stateSetting = {
-      initial: 'reset',
-      context: {
-        count: seconds,
-      },
-      states: {
-        reset: {
-          on: {
-            START: { to: 'running' },
-          },
-        },
-        running: {
-          on: {
-            TICK: { to: 'running', callback: { count: countdown } },
-            STOP: { to: 'paused' },
-            CLEAR: { to: 'reset', callback: { count: reset } },
-          },
-        },
-        paused: {
-          on: {
-            START: { to: 'running' },
-            CLEAR: { to: 'reset', callback: { count: reset } },
-          },
-        },
-      },
-    };
-
     this._stateMachine = StateMachine.create(this._stateSetting);
   }
 
