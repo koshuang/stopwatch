@@ -18,16 +18,16 @@ module.exports = {
   node: {
     fs: "empty"
   },
+  alias: {
+    'stopwatch': path.resolve(__dirname, '../src/modules/stopwatch'),
+    'state-machine': path.resolve(__dirname, '../src/lib/state-machine'),
+  },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: "babel-loader",
-
-        options: {
-          presets: ["env"]
-        }
       },
       {
         test: /\.(scss|css|sass)$/,
