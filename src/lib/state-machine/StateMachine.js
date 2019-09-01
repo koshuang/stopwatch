@@ -3,6 +3,7 @@ import debugCreator from 'debug';
 const debug = debugCreator('state-machine');
 
 export class StateMachine {
+  context;
   _config;
   _state;
   _stateMap = new Map();
@@ -19,6 +20,7 @@ export class StateMachine {
 
   _init() {
     this._setState(this._config.initial);
+    this._initContext();
     this._initStates();
   }
 
@@ -29,12 +31,22 @@ export class StateMachine {
   send(action) {
     const transitions = this._findAvailableNextTransitions(this._state);
 
-    const nextState = transitions[action];
-    if (!nextState) {
+    const transitionResult = transitions[action];
+    if (!transitionResult) {
       throw new Error(`Could not find next state for action ${action}`);
     }
 
-    this._setState(nextState);
+    this._setState(transitionResult.to);
+
+    if (transitionResult.callback) {
+      for (let [contextProperty, fn] of Object.entries(transitionResult.callback)) {
+        this.context[contextProperty] = fn(this.context);
+      }
+    }
+  }
+
+  _initContext() {
+    this.context = this._config.context;
   }
 
   _initStates() {
