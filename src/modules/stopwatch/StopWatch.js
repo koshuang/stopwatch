@@ -2,10 +2,10 @@ import { StateMachine } from 'state-machine';
 import { secondsToString } from 'utils';
 
 export class StopWatch {
-  time;
-  start;
-  stop;
-  reset;
+  _time;
+  _start;
+  _stop;
+  _reset;
 
   _stateMachine;
   _stateSetting;
@@ -17,18 +17,18 @@ export class StopWatch {
   };
 
   constructor() {
-    this.time = document.getElementById('time');
-    this.start = document.getElementById('start');
-    this.stop = document.getElementById('stop');
-    this.reset = document.getElementById('reset');
+    this._time = document.getElementById('time');
+    this._start = document.getElementById('start');
+    this._stop = document.getElementById('stop');
+    this._reset = document.getElementById('reset');
   }
 
   run() {
-    this.initStateMachine();
-    this.initEventListeners();
+    this._initStateMachine();
+    this._initEventListeners();
   }
 
-  initStateMachine() {
+  _initStateMachine() {
     const seconds = 60;
     const countdown = context => context.count - 1;
     const reset = () => seconds;
@@ -63,21 +63,19 @@ export class StopWatch {
     this._stateMachine = StateMachine.create(this._stateSetting);
   }
 
-  initEventListeners() {
-    this.start.addEventListener('click', () => this.onStart());
-
-    this.stop.addEventListener('click', () => this.onStop());
-
-    this.reset.addEventListener('click', () => this.onReset());
+  _initEventListeners() {
+    this._start.addEventListener('click', () => this._onStart());
+    this._stop.addEventListener('click', () => this._onStop());
+    this._reset.addEventListener('click', () => this._onReset());
   }
 
-  onStart() {
+  _onStart() {
     try {
       this._stateMachine.send(this._actions.start);
 
       this._timerId = setInterval(() => {
         this._stateMachine.send(this._actions.tick);
-        this.renderTime();
+        this._renderTime();
       }, 1000);
     } catch (error) {
       console.log(error);
@@ -85,7 +83,7 @@ export class StopWatch {
     }
   }
 
-  onStop() {
+  _onStop() {
     try {
       this._stateMachine.send(this._actions.stop);
 
@@ -96,22 +94,22 @@ export class StopWatch {
     }
   }
 
-  onReset() {
+  _onReset() {
     try {
       this._stateMachine.send(this._actions.clear);
 
       clearInterval(this._timerId);
-      this.renderTime();
+      this._renderTime();
     } catch (error) {
       console.log(error);
       // do noting
     }
   }
 
-  renderTime() {
+  _renderTime() {
     const seconds = this._stateMachine.context.count;
     const timeString = secondsToString(seconds);
 
-    this.time.innerHTML = timeString;
+    this._time.innerHTML = timeString;
   }
 }
