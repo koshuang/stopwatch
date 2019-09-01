@@ -1,13 +1,8 @@
-require("normalize.css/normalize.css");
-require("./styles/index.scss");
+import 'normalize.css/normalize.css';
+import './styles/index.scss';
+import { StopWatch } from './modules/stopwatch';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const pluginsTriggerElement = document.getElementById("plugins-trigger");
-  const pluginsElement = document.getElementById("plugins");
+const stopwatch = new StopWatch();
+stopwatch.run();
 
-  const pluginsVisibleClass = "splash-overview-plugins__list--visible";
-
-  pluginsTriggerElement.onclick = () => {
-    pluginsElement.classList.toggle(pluginsVisibleClass);
-  };
-});
+window.stopwatch = stopwatch;
