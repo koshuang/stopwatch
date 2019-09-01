@@ -12,6 +12,12 @@ module.exports = {
   node: {
     fs: "empty"
   },
+  resolve: {
+    alias: {
+      'stopwatch': path.resolve(__dirname, 'src/modules/stopwatch'),
+      'state-machine': path.resolve(__dirname, 'src/lib/state-machine'),
+    },
+  },
   module: {
     rules: [
       {
